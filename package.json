@@ -21,6 +21,8 @@
     "@heroicons/vue": "^2.1.1",
     "@nuxt/image": "^1.1.0",
     "@supabase/supabase-js": "^2.39.1",
+    "highcharts": "^11.2.0",
+    "highcharts-vue": "^1.4.3",
     "vue-happy-bus": "^2.0.1-vue3"
   }
 }

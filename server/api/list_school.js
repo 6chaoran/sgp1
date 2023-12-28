@@ -7,6 +7,5 @@ export default defineEventHandler(async(event) => {
     const { data, error } = await supabase
       .from('profile')
       .select('school_id, area, name, parent_volunteer, logo_url, address, website, type_sap, type_boys-only, type_girls-only')
-
     return data
 })

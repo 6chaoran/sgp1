@@ -1,5 +1,12 @@
 <template>
-  <SelectMenu label-text="Area"/>
+  <div class="flex flex-row">
+    <div class="w-1/2 mr-3">    
+      <SelectMenu label-text="Area" :choices="areaChoices" emit-id="areaSelected"/>
+    </div>
+    <div class="w-1/4 mx-3">
+      <SelectMenu  label-text="SAP" :choices="sapChoices" emit-id="sapSelected"/>
+    </div>
+  </div>
   <ul role="list" class="divide-y divide-gray-100">
     <li v-for="school in schools" :key="school.school_id" class="relative flex justify-between gap-x-6 py-5">
       <div class="flex gap-x-4">
@@ -51,17 +58,48 @@
 
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
-const { data } = await useFetch('/api/list_school')
-const schools = ref(data.value)
 import { $on } from 'vue-happy-bus'
-// $on('areaSelected', (area) =>{
-//   console.log(area)
-// })
-$on('areaSelected', (area) => {
-  if (area != 'All'){
-    schools.value = data.value.filter( (x) => x.area === area)
-  } else {
-    schools.value = data.value
-  }
+const { data } = await useFetch('/api/list_school')
+
+const schools = ref(data.value)
+const areaChoices = ref([{name: "All"}])
+const sapChoices = [ {name: "All"}, {name: true}, {name: false}]
+const selected = ref({
+  area: 'All',
+  sap: 'All',
 })
+
+useFetch('/api/list_area').then( (d) => {
+  const choices = d.data.value
+  choices.unshift({name: "All"})
+  areaChoices.value = choices
+})
+// areaChoices.value = choices
+// console.log(choices)
+
+$on('areaSelected', (area) => {
+  selected.value.area = area
+})
+$on('sapSelected', (sap) => {
+  selected.value.sap = sap
+})
+
+watch(selected, (n, o) => {
+  const area = n.area
+  const sap = n.sap
+  if (area === 'All' && sap === 'All'){
+    schools.value = data.value
+  } else if (sap === 'All') {
+    schools.value = data.value.filter( (x) => x.area === area)
+  } else if(area == 'All') {
+    schools.value = data.value.filter( (x) => x.type_sap === sap)
+  }else {
+    schools.value = data.value.filter( (x) => x.area === area && x.type_sap === sap)
+  }
+}, {deep: true})
+
+
+
+
+  
 </script>

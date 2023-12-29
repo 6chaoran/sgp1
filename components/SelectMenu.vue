@@ -14,9 +14,6 @@
             <ListboxOption as="template" v-for="(person, id) in choices" :key="id" :value="person" v-slot="{ active, selected }">
               <li :class="[active ? 'bg-indigo-600 text-white' : 'text-gray-900', 'relative cursor-default select-none py-2 pl-3 pr-9']">
                 <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate capitalize']">{{ person.name }}</span>
-                <!-- <span v-if="selected" :class="[active ? 'text-white' : 'text-indigo-600', 'absolute inset-y-0 right-0 flex items-center pr-4']">
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span> -->
               </li>
             </ListboxOption>
           </ListboxOptions>
@@ -35,9 +32,10 @@
     labelText: String,
     emitId: String,
     choices: Array,
+    selected: String,
   })
   
 
-  const selected = ref(props.choices[0])
+  const selected = ref({name: props.selected})
 
   </script>

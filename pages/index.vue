@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-row">
     <div class="w-1/2 mr-3">    
-      <SelectMenu label-text="Area" :choices="areaChoices" emit-id="areaSelected"/>
+      <SelectMenu label-text="Area" :choices="areaChoices" emit-id="areaSelected" :selected="selectedArea" />
     </div>
     <div class="w-1/4 mx-3">
-      <SelectMenu  label-text="SAP" :choices="sapChoices" emit-id="sapSelected"/>
+      <SelectMenu  label-text="SAP" :choices="sapChoices" emit-id="sapSelected" :selected="selected.sap"/>
     </div>
   </div>
   <ul role="list" class="divide-y divide-gray-100">
@@ -61,33 +61,23 @@
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { $on } from 'vue-happy-bus'
 
-
 const selectedArea = useCookie('selectedArea')
 selectedArea.value = selectedArea.value || 'All'
 const selected = ref({
   area: 'All',
   sap: 'All',
 })
-const sapChoices = [{ name: "All" }, { name: true }, { name: false }]
+const sapChoices = getSapList()
+const areaChoices = getAreaList()
 
-const areaChoices = ref([{name: 'All'}])
 const { data } = await useFetch('/api/list_school')
 const schools = ref(data.value)
-useFetch('/api/list_area').then((d) => {
-  const choices = d.data.value
-  choices.unshift({ name: "All" })
-  areaChoices.value = choices
-})
 
 onMounted(() => {
   const selectedArea = useCookie('selectedArea')
   selectedArea.value = selectedArea.value || 'All'
   selected.value.area = selectedArea.value
-
 })
-
-// areaChoices.value = choices
-// console.log(choices)
 
 $on('areaSelected', (area) => {
   selected.value.area = area

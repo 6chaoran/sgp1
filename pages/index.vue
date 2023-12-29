@@ -54,31 +54,44 @@
       </div>
     </li>
   </ul>
+
 </template>
 
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { $on } from 'vue-happy-bus'
-const { data } = await useFetch('/api/list_school')
 
-const schools = ref(data.value)
-const areaChoices = ref([{name: "All"}])
-const sapChoices = [ {name: "All"}, {name: true}, {name: false}]
+
+const selectedArea = useCookie('selectedArea')
+selectedArea.value = selectedArea.value || 'All'
 const selected = ref({
   area: 'All',
   sap: 'All',
 })
+const sapChoices = [{ name: "All" }, { name: true }, { name: false }]
 
-useFetch('/api/list_area').then( (d) => {
+const areaChoices = ref([{name: 'All'}])
+const { data } = await useFetch('/api/list_school')
+const schools = ref(data.value)
+useFetch('/api/list_area').then((d) => {
   const choices = d.data.value
-  choices.unshift({name: "All"})
+  choices.unshift({ name: "All" })
   areaChoices.value = choices
 })
+
+onMounted(() => {
+  const selectedArea = useCookie('selectedArea')
+  selectedArea.value = selectedArea.value || 'All'
+  selected.value.area = selectedArea.value
+
+})
+
 // areaChoices.value = choices
 // console.log(choices)
 
 $on('areaSelected', (area) => {
   selected.value.area = area
+  selectedArea.value = area
 })
 $on('sapSelected', (sap) => {
   selected.value.sap = sap
@@ -87,19 +100,19 @@ $on('sapSelected', (sap) => {
 watch(selected, (n, o) => {
   const area = n.area
   const sap = n.sap
-  if (area === 'All' && sap === 'All'){
+  if (area === 'All' && sap === 'All') {
     schools.value = data.value
   } else if (sap === 'All') {
-    schools.value = data.value.filter( (x) => x.area === area)
-  } else if(area == 'All') {
-    schools.value = data.value.filter( (x) => x.type_sap === sap)
-  }else {
-    schools.value = data.value.filter( (x) => x.area === area && x.type_sap === sap)
+    schools.value = data.value.filter((x) => x.area === area)
+  } else if (area == 'All') {
+    schools.value = data.value.filter((x) => x.type_sap === sap)
+  } else {
+    schools.value = data.value.filter((x) => x.area === area && x.type_sap === sap)
   }
-}, {deep: true})
+}, { deep: true })
 
 
 
 
-  
+
 </script>

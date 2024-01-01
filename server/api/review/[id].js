@@ -7,7 +7,7 @@ export default defineEventHandler(async(event) => {
     const supabase = createClient(url, key)
     const { data, error } = await supabase
       .from('review')
-      .select('school_id, username, caption, rating')
+      .select('school_id, username, caption, rating, relative_date')
       .eq('school_id', id)
     return data
 })

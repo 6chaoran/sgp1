@@ -35,3 +35,7 @@ export const getAreaList = () =>{
 export const getSapList = () => {
   return [{ name: "All" }, { name: true }, { name: false }]
 }
+
+export const getGepList = () => {
+  return [{ name: "All" }, { name: true }, { name: false }]
+}

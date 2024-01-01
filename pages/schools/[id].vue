@@ -1,5 +1,11 @@
 <template>
-
+    <div class="-mx-4">
+      <v-breadcrumbs :items="items" color="indigo-darken-3">
+        <template v-slot:prepend>
+      <v-icon size="small" icon="mdi-home" color="indigo-600"></v-icon>
+    </template>
+  </v-breadcrumbs>
+    </div>
     <div class="px-0 sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
@@ -10,7 +16,7 @@
         </div>
         
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none sm:w-1/6">
-          <SelectMenu label-text="Year" :choices="yearChoices" emit-id="selectedYear" :selected="selectedYear"/>          
+          <SelectMenu label-text="Year" :choices="yearChoices" :selected="selectedYear" v-model="selectedYear"/>          
         </div>
       </div>
       
@@ -52,7 +58,7 @@ const yearChoices = ref([{name: '2023'}])
 const ballotHistoryData = ref([])
 const ballotHistoryFormatted = ref([])
 const profile = ref({})
-const selectedYear = ref('2023')
+const selectedYear = ref({name: '2023'})
 const reviews = ref(null)
 const openReviewModal = ref(false)
 
@@ -81,7 +87,7 @@ useFetch(`/api/review/${id}`).then((resp) => {
 })
 
 const ballotHistoryFiltered = computed(() => {
-  return ballotHistoryFormatted.value.filter( x => x.year == selectedYear.value)
+  return ballotHistoryFormatted.value.filter( x => x.year == selectedYear.value.name)
 })
 
 const formatOdds = (odds) => {
@@ -127,5 +133,19 @@ const formatRow = (row) => {
   return newRow
 }
 
+const items = computed( () => {
+  return [
+        {
+          title: 'School List',
+          disabled: false,
+          href: '/',
+        },
+        {
+          title: profile.value.name,
+          disabled: true,
+          href: '',
+        },
+      ]
+}) 
 
 </script>

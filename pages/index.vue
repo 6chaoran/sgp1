@@ -1,11 +1,17 @@
 <template>
   <div class="flex flex-row">
-    <div class="w-1/2 mr-3">    
-      <SelectMenu label-text="Area" :choices="areaChoices" emit-id="areaSelected" :selected="selectedArea" />
+    <div class="w-1/2 mr-0">    
+      <SelectMenu label-text="Area" :choices="areaChoices" :selected="selected.area" v-model="selected.area"/>
     </div>
-    <div class="w-1/4 mx-3">
-      <SelectMenu  label-text="SAP" :choices="sapChoices" emit-id="sapSelected" :selected="selected.sap"/>
+    <div class="w-1/4 mx-1">
+      <SelectMenu  label-text="SAP" :choices="sapChoices"  :selected="selected.sap" v-model="selected.sap"/>
     </div>
+    <div class="w-1/4 mx-0">
+      <SelectMenu  label-text="GEP" :choices="gepChoices" :selected="selected.gep" v-model="selected.gep"/>
+    </div>
+  </div>
+  <div class="mt-3 ml-1">
+    {{ schools.length }} schools are selected
   </div>
   <ul role="list" class="divide-y divide-gray-100">
     <li v-for="school in schools" :key="school.school_id" class="relative flex justify-between gap-x-6 py-5">
@@ -17,6 +23,9 @@
               <span class="absolute inset-x-0 -top-px bottom-0" />
               {{ school.name }}
             </a>
+            <span v-if="school['type_gep']" class="inline-flex items-center rounded-full bg-purple-50 mx-2 px-2 py-1 text-xs font-medium text-purple-600 ring-1 ring-inset ring-purple-500/10">
+              GEP
+            </span>
             <span v-if="school.type_sap" class="inline-flex items-center rounded-full bg-purple-50 mx-2 px-2 py-1 text-xs font-medium text-purple-600 ring-1 ring-inset ring-purple-500/10">
               SAP
             </span>
@@ -26,7 +35,14 @@
             <span v-if="school['type_boys-only']" class="inline-flex items-center rounded-full bg-blue-50 mx-2 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10">
               Boys Only
             </span>
+
           </p>
+          <div class="mt-1 flex items-center gap-x-1.5 sm:hidden">
+            <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+              <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            </div>
+            <p class="text-xs leading-5 text-gray-500">{{ school.area }}</p>
+          </div>
           <p class="mt-1 flex text-xs leading-5 text-gray-500">
             {{ school.address }}
           </p>
@@ -59,46 +75,56 @@
 
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { $on } from 'vue-happy-bus'
 
-const selectedArea = useCookie('selectedArea')
-selectedArea.value = selectedArea.value || 'All'
 const selected = ref({
-  area: 'All',
-  sap: 'All',
+  area: {name: 'All'},
+  sap: {name: 'All'},
+  gep: {name: 'All'},
 })
 const sapChoices = getSapList()
+const gepChoices = getGepList()
 const areaChoices = getAreaList()
 
 const { data } = await useFetch('/api/list_school')
 const schools = ref(data.value)
+let selectedArea;
 
-onMounted(() => {
-  const selectedArea = useCookie('selectedArea')
+onBeforeMount( () => {
+  selectedArea = useCookie('selectedArea')
   selectedArea.value = selectedArea.value || 'All'
-  selected.value.area = selectedArea.value
-})
-
-$on('areaSelected', (area) => {
-  selected.value.area = area
-  selectedArea.value = area
-})
-$on('sapSelected', (sap) => {
-  selected.value.sap = sap
+  selected.value.area.name = selectedArea.value 
 })
 
 watch(selected, (n, o) => {
-  const area = n.area
-  const sap = n.sap
-  if (area === 'All' && sap === 'All') {
-    schools.value = data.value
-  } else if (sap === 'All') {
-    schools.value = data.value.filter((x) => x.area === area)
-  } else if (area == 'All') {
-    schools.value = data.value.filter((x) => x.type_sap === sap)
+  const area = n.area.name
+  const sap = n.sap.name
+  const gep = n.gep.name  
+  let filtered;
+  if (area === 'All'){
+    filtered = data.value
   } else {
-    schools.value = data.value.filter((x) => x.area === area && x.type_sap === sap)
+    filtered = data.value.filter((x) => x.area === area)
+    selectedArea.value = area
   }
+
+  if (sap === true){
+    filtered = filtered.filter((x) => x.type_sap)
+  } else if (sap === false) {
+    filtered = filtered.filter((x) => !x.type_sap)
+  } else {
+
+  }
+
+  if (gep === true){
+    filtered = filtered.filter((x) => x.type_gep)
+  } else if (gep === false) {
+    filtered = filtered.filter((x) => !x.type_sap)
+  } else {
+
+  }
+
+  schools.value = filtered
+
 }, { deep: true })
 
 

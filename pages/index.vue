@@ -128,7 +128,10 @@ watch(selected, (n, o) => {
 }, { deep: true })
 
 
-
+definePageMeta({
+  title : 'SGP1',
+  description: 'P1 registration'
+})
 
 
 </script>

@@ -19,10 +19,10 @@
                               <v-col class="-mb-2">
                                 <v-row>
                                 <strong>{{ review.username }}</strong> 
-                                <v-spacer></v-spacer>{{ review.relative_date }}
+                                <v-spacer></v-spacer>{{ datediff(review.timestamp) }}
                               </v-row>
                               <v-row class="mb-1"><v-rating :model-value="review.rating" 
-                                size="14" :length="5" color="orange-lighten-1" density="comfortable" readonly></v-rating></v-row>
+                                :size="14" :length="5" color="yellow-darken-2" density="comfortable" readonly></v-rating></v-row>
                               <v-row>{{ review.caption }}</v-row>
                               </v-col>
                       </li>
@@ -54,4 +54,29 @@ $on('showReviews', () => {
 const props = defineProps({
     reviews: Array,
 })
+
+const datediff = (date) => {
+  const today = new Date()
+  const ts = new Date(date)
+  const diff = new Date(today.getTime() - ts.getTime())
+  const days = diff.getUTCDate()
+  if (days < 7) {
+    const unit = days == 1 ? 'day' : 'days'
+    return `${days} ${unit} ago`
+  } else if (days < 28) {
+    const weeks = (days / 7).toFixed(0)
+    const unit = weeks == 1 ? 'week' : 'weeks'
+    return `${weeks} ${unit} ago` 
+  } else if (days < 365){
+    const months = diff.getUTCMonth()
+    const unit = months == 1 ? 'month' : 'months'
+    return `${months} ${unit} ago`
+  } else {
+    const years = diff.getUTCFullYear() - 1970
+    const unit = years == 1 ? 'year' : 'years'
+    return `${years} ${unit} ago`
+  }
+  return ''
+}
+
 </script>

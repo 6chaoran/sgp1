@@ -1,17 +1,64 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
+<script setup>
+import { ref } from 'vue'
+import {
+  Dialog,
+  DialogPanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  TransitionChild,
+  TransitionRoot,
+} from '@headlessui/vue'
+import {
+  Bars3Icon,
+  BellIcon,
+  CalendarIcon,
+  ChartPieIcon,
+  Cog6ToothIcon,
+  DocumentDuplicateIcon,
+  FolderIcon,
+  HomeIcon,
+  UsersIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+
+const navigation = ref([
+  { name: 'School List', href: '/', icon: HomeIcon, current: true },
+  { name: 'By Area', href: '/areas', icon: UsersIcon, current: false },
+  // { name: 'Projects', href: '#', icon: FolderIcon, current: false },
+  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+  // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
+  // { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+])
+
+const teams = [
+  // { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
+  // { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
+  // { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
+]
+const userNavigation = [
+  { name: 'Your profile', href: '#' },
+  { name: 'Sign out', href: '#' },
+]
+
+const updateCurrent = (idx) => {
+  for(let i = 0;  i < navigation.value.length; i++){
+    navigation.value[i].current = false
   }
-  ```
--->
+  navigation.value[idx].current = true
+  sidebarOpen.value = false
+}
+
+const siteTitle = 'SGP1'
+const userName = 'Chaoran'
+const userAvatar = '/unnamed.jpg'
+const siteLogo = 'https://tailwindui.com/img/logos/mark.svg?color=white'
+const sidebarOpen = ref(false)
+
+</script>
+
 <template>
   <!--
     This example requires updating your template:
@@ -48,11 +95,11 @@
                   <ul role="list" class="flex flex-1 flex-col gap-y-7">
                     <li>
                       <ul role="list" class="-mx-2 space-y-1">
-                        <li v-for="item in navigation" :key="item.name">
-                          <a :href="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                        <li v-for="(item, idx) in navigation" :key="item.name">
+                          <NuxtLink @click="updateCurrent(idx)" :to="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                             <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                             {{ item.name }}
-                          </a>
+                          </NuxtLink>
                         </li>
                       </ul>
                     </li>
@@ -94,15 +141,15 @@
             <li>
               <ul role="list" class="-mx-2 space-y-1">
                 <li v-for="item in navigation" :key="item.name">
-                  <a :href="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                  <NuxtLink :to="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                     <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                     {{ item.name }}
-                  </a>
+                  </NuxtLink>
                 </li>
               </ul>
             </li>
             <li>
-              <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+              <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
                 <li v-for="team in teams" :key="team.name">
                   <a :href="team.href" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
@@ -110,7 +157,7 @@
                     <span class="truncate">{{ team.name }}</span>
                   </a>
                 </li>
-              </ul>
+              </ul> -->
             </li>
             <li class="mt-auto">
               <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
@@ -132,26 +179,23 @@
 
         <!-- Separator -->
         <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
-        <h1 class="text-gray-600 font-bold">SGP1</h1>
-        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+        <h1 class="font-bold text-indigo-600">{{ siteTitle }}</h1>
+          <span class="flex flex-wrap hidden sm:block">Singapore Primary 1 Registration Companion</span>
+          <span class="flex flex-wrap block sm:hidden">Registration Companion</span>
           <v-spacer></v-spacer>
-          <!-- <form class="relative flex flex-1" action="#" method="GET">
-            <label for="search-field" class="sr-only">Search</label>
-            <MagnifyingGlassIcon class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" aria-hidden="true" />
-            <input id="search-field" class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="search" />
-          </form> -->
+        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
           <div class="flex items-center gap-x-4 lg:gap-x-6">
-            <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+            <!-- <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
               <span class="sr-only">View notifications</span>
               <BellIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
-
+            </button> -->
+            
             <!-- Separator -->
             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true" />
 
             <!-- Profile dropdown -->
-            <Menu as="div" class="relative">
-              <MenuButton class="-m-1.5 flex items-center p-1.5">
+            <Menu as="div" class="relative ">
+              <MenuButton class="-m-1.5 flex items-center">
                 <span class="sr-only">Open user menu</span>
                 <img class="h-8 w-8 rounded-full bg-gray-50" :src="userAvatar" alt="" />
                 <span class="hidden lg:flex lg:items-center">
@@ -183,53 +227,3 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import {
-  Dialog,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
-import {
-  Bars3Icon,
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-
-const navigation = [
-  { name: 'School List', href: '/', icon: HomeIcon, current: true },
-  { name: 'By Area', href: '/areas', icon: UsersIcon, current: false },
-  // { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-  // { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-]
-const teams = [
-  // { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  // { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  // { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-]
-const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
-
-const userName = 'Chaoran'
-const userAvatar = '/unnamed.jpg'
-const siteLogo = 'https://tailwindui.com/img/logos/mark.svg?color=white'
-const sidebarOpen = ref(false)
-
-</script>

@@ -6,7 +6,7 @@ export default defineEventHandler(async(event) => {
     const key = config.public.supabaseKey  
     const supabase = createClient(url, key)
     const { data, error } = await supabase
-      .from('reviews')
+      .from('review2')
       .select('school_id, username, caption, rating, timestamp')
       .eq('school_id', id)
       .order("timestamp", { ascending: false });

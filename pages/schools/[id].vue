@@ -1,6 +1,6 @@
 <template>
     <div class="-mx-4">
-      <v-breadcrumbs :items="items" color="indigo-darken-3">
+      <v-breadcrumbs :items="items" color="indigo-darken-3" divider="/"> /
         <template v-slot:prepend>
       <v-icon size="small" icon="mdi-home" color="indigo-600"></v-icon>
     </template>
@@ -10,7 +10,7 @@
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-base font-semibold leading-6 text-gray-900 text-indigo-600">{{ profile.name }}</h1>
-          <p class="mt-2 text-sm text-gray-700">{{ profile.area }}</p>
+          <p class="mt-2 text-sm text-gray-700">{{ profile.address }} | <NuxtLink :to="profile.website" target="_blank">Website</NuxtLink></p> 
           <div class="mt-3"><Rating :reviews="reviews"/></div>
           
         </div>
@@ -44,10 +44,15 @@
               </ClientOnly>
               <ReviewModal :reviews = "reviews"/>
             </div>
+            <div class="mt-6 ml-3">
+              <h2 class="font-semibold text-gray-600">Selection Odds By Year</h2>
+            </div>
+            <Chart  :data="ballotHistoryData"/>
           </div>
         </div>
       </div>
     </div>
+
   </template>
   
 <script setup>
@@ -76,6 +81,7 @@ useFetch('/api/list_school').then((resp) => {
 
 useFetch(`/api/ballot/${id}`).then((resp) => {
   const data = resp.data.value
+  // console.log(data)
   ballotHistoryData.value = data
   const allYears = data.map(x => x.year).filter(onlyUnique).sort().reverse()
   yearChoices.value = allYears.map( x => Object({name: x}))
@@ -141,10 +147,15 @@ const items = computed( () => {
           href: '/',
         },
         {
-          title: profile.value.name,
-          disabled: true,
-          href: '',
+          title: profile.value.area,
+          disabled: false,
+          href: `/area/${profile.value.area}`,
         },
+        // {
+        //   title: profile.value.name,
+        //   disabled: true,
+        //   href: '',
+        // },
       ]
 }) 
 

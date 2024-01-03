@@ -62,7 +62,7 @@ const datediff = (date) => {
   const days = diff.getUTCDate()
   const months = diff.getUTCMonth() 
   const years = diff.getUTCFullYear() - 1970
-  console.log(`${ts} ${years} ${months} ${days}`)
+  // console.log(`${ts} ${years} ${months} ${days}`)
   if (years == 0 && months == 0 && days < 7){
     const unit = days == 1 ? 'day' : 'days'
     return `${days} ${unit} ago`

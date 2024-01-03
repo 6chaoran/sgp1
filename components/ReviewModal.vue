@@ -60,23 +60,23 @@ const datediff = (date) => {
   const ts = new Date(date)
   const diff = new Date(today.getTime() - ts.getTime())
   const days = diff.getUTCDate()
-  if (days < 7) {
+  const months = diff.getUTCMonth() 
+  const years = diff.getUTCFullYear() - 1970
+  console.log(`${ts} ${years} ${months} ${days}`)
+  if (years == 0 && months == 0 && days < 7){
     const unit = days == 1 ? 'day' : 'days'
     return `${days} ${unit} ago`
-  } else if (days < 28) {
+  } else if (years == 0 && months == 0) {
     const weeks = (days / 7).toFixed(0)
     const unit = weeks == 1 ? 'week' : 'weeks'
     return `${weeks} ${unit} ago` 
-  } else if (days < 365){
-    const months = diff.getUTCMonth()
+  } else if (years == 0) {
     const unit = months == 1 ? 'month' : 'months'
     return `${months} ${unit} ago`
   } else {
-    const years = diff.getUTCFullYear() - 1970
     const unit = years == 1 ? 'year' : 'years'
     return `${years} ${unit} ago`
   }
-  return ''
 }
 
 </script>

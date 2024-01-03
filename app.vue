@@ -182,8 +182,8 @@ const sidebarOpen = ref(false)
         <h1 class="font-bold text-indigo-600">{{ siteTitle }}</h1>
           <span class="flex flex-wrap hidden sm:block">Singapore Primary 1 Registration Companion</span>
           <span class="flex flex-wrap block sm:hidden">Registration Companion</span>
-          <v-spacer></v-spacer>
-        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+          <v-spacer class="hidden sm:block"></v-spacer>
+        <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end">
           <div class="flex items-center gap-x-4 lg:gap-x-6">
             <!-- <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
               <span class="sr-only">View notifications</span>
@@ -195,7 +195,7 @@ const sidebarOpen = ref(false)
 
             <!-- Profile dropdown -->
             <Menu as="div" class="relative ">
-              <MenuButton class="-m-1.5 flex items-center">
+              <MenuButton class="-m-1.5 flex items-center p-1.5">
                 <span class="sr-only">Open user menu</span>
                 <img class="h-8 w-8 rounded-full bg-gray-50" :src="userAvatar" alt="" />
                 <span class="hidden lg:flex lg:items-center">

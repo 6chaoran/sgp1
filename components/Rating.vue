@@ -26,7 +26,8 @@ const count = computed( () => {
 
 const avg = computed(()=>{
     if(props.reviews){
-        return arrayMean(props.reviews.map( x => x.rating)).toFixed(2)
+        const x = arrayMean(props.reviews.map( x => x.rating))
+        return x ? x.toFixed(2) : 'N/A'
     } else {
         return 'N/A'
     }

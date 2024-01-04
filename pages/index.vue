@@ -1,15 +1,28 @@
 <template>
-  <div class="flex flex-row">
-    <div class="w-1/2 mr-0">    
+  <div class="flex flex-row items-end">
+    <div class="w-1/2 mr-0 sm:w-1/3">    
       <SelectMenu label-text="Area" :choices="areaChoices" :selected="selected.area" v-model="selected.area"/>
     </div>
-    <div class="w-1/4 mx-1">
+    <div class="w-1/4 mx-1 sm:w-1/12">
       <SelectMenu  label-text="SAP" :choices="sapChoices"  :selected="selected.sap" v-model="selected.sap"/>
     </div>
-    <div class="w-1/4 mx-0">
+    <div class="w-1/4 mx-0 sm:w-1/12">
       <SelectMenu  label-text="GEP" :choices="gepChoices" :selected="selected.gep" v-model="selected.gep"/>
     </div>
+
   </div>
+  <div class="w-full mt-1 sm:w-1/3">
+        <v-autocomplete 
+        variant="outlined"
+        density="compact"
+          label="School"
+          rounded="lg"
+          color="indigo"
+          clearable
+          :items="schoolList"
+          v-model="selected.school"
+        ></v-autocomplete>
+      </div>
   <div class="mt-3 ml-1">
     {{ schools.length }} schools are selected
   </div>
@@ -76,10 +89,12 @@
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 
+
 const selected = ref({
   area: {name: 'All'},
   sap: {name: 'All'},
   gep: {name: 'All'},
+  school: null
 })
 const sapChoices = getSapList()
 const gepChoices = getGepList()
@@ -87,6 +102,9 @@ const areaChoices = getAreaList()
 
 const { data } = await useFetch('/api/list_school')
 const schools = ref(data.value)
+const schoolList = computed( () => {
+  return data.value.map( x => x.name)
+})
 let selectedArea;
 
 onBeforeMount( () => {
@@ -99,7 +117,9 @@ watch(selected, (n, o) => {
   const area = n.area.name
   const sap = n.sap.name
   const gep = n.gep.name  
+  const school = n.school
   let filtered;
+
   if (area === 'All'){
     filtered = data.value
   } else {
@@ -122,6 +142,10 @@ watch(selected, (n, o) => {
   } else {
 
   }
+
+  if (school){
+    filtered = data.value.filter((x) => x.name === school)
+  } 
 
   schools.value = filtered
 

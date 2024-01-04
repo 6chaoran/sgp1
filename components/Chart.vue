@@ -30,20 +30,25 @@ const props = defineProps({
     data: Array
 })
 
-const oddsData2C = computed(() => {
+const oddsData = computed(() => {
     return props.data.filter(x => x.category == 'odds')
 })
 
+
 const x = computed(() => {
-    return oddsData2C.value.map(x => x.year)
+    return oddsData.value.map(x => x.year)
 })
 
 const y2C = computed(() => {
-    return oddsData2C.value.map(x => x['2C']).map(x => x == '' ? 1 : x)
+    return oddsData.value.map(x => x['2C']).map(x => x == '' ? 1 : x)
 })
 
 const y2B = computed(() => {
-    return oddsData2C.value.map(x => x['2B']).map(x => x == '' ? 1 : x)
+    return oddsData.value.map(x => x['2B']).map(x => x == '' ? 1 : x)
+})
+
+const y2A = computed(() => {
+    return oddsData.value.map(x => x['2A(1)']).map(x => x == '' ? 1 : x)
 })
 
 
@@ -73,7 +78,7 @@ setTimeout(() => {
             right: '3%',
         },
         legend: {
-            data: ['2B', '2C'],
+            data: ['2A', '2B', '2C'],
             bottom: 0,
         },
 
@@ -91,6 +96,12 @@ setTimeout(() => {
             }
         },
         series: [
+            {
+                name: '2A',
+                data: y2A.value,
+                type: 'line',
+                smooth: true,
+            },
             {
                 name: '2B',
                 data: y2B.value,
@@ -118,5 +129,5 @@ setTimeout(() => {
 
     option && myChart.setOption(option);
 
-}, 300)
+}, 1000)
 </script>

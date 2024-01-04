@@ -30,7 +30,7 @@
         <div class="mt-2">
           <v-icon icon="mdi-map-marker" size="small" color="gray-600" class="pa-1 mr-2"></v-icon><span
             class="mt-2 text-sm text-gray-700">{{ profile.address }} &nbsp; | &nbsp; <NuxtLink :to="profile.website" target="_blank"
-              class="underline">School Website</NuxtLink></span>
+              class="underline">Website</NuxtLink></span>
         </div>
         <div class="mt-3">
           <Rating :reviews="reviews" />
@@ -76,7 +76,7 @@
             <ReviewModal :reviews="reviews" />
           </div>
           <div class="mt-6 ml-3">
-            <h2 class="font-semibold text-gray-600">Ballot Odds By Year</h2>
+            <h2 class="font-semibold text-gray-600 text-sm">Ballot Odds By Year</h2>
           </div>
           <Chart :data="ballotHistoryData" />
         </div>

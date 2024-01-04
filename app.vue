@@ -39,8 +39,10 @@ const teams = [
   // { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
 const userNavigation = [
-  { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'About me', href: 'https://www.ichaoran.com/about/' },
+  { name: 'Other projects', href: 'https://www.ichaoran.com/projects/'},
+  // { name: 'Sign out', href: '#' },
+  { name: 'Sponsor me', href: 'https://www.buymeacoffee.com/chaoran'}
 ]
 
 const updateCurrent = (idx) => {
@@ -54,7 +56,7 @@ const updateCurrent = (idx) => {
 const siteTitle = 'SGP1'
 const userName = 'Chaoran'
 const userAvatar = '/unnamed.jpg'
-const siteLogo = 'https://tailwindui.com/img/logos/mark.svg?color=white'
+const siteLogo = '/social.jfif' //'https://tailwindui.com/img/logos/mark.svg?color=white'
 const sidebarOpen = ref(false)
 
 </script>
@@ -89,7 +91,7 @@ const sidebarOpen = ref(false)
               <!-- Sidebar component, swap this element with another sidebar if you like -->
               <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-8 w-auto" :src="siteLogo" alt="Your Company" />
+                    <NuxtImg class="mt-3 h-16 w-auto rounded-full" :src="siteLogo" alt="Your Company" />
                 </div>
                 <nav class="flex flex-1 flex-col">
                   <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -100,6 +102,7 @@ const sidebarOpen = ref(false)
                             <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                             {{ item.name }}
                           </NuxtLink>
+
                         </li>
                       </ul>
                     </li>
@@ -115,10 +118,11 @@ const sidebarOpen = ref(false)
                       </ul>
                     </li> -->
                     <li class="mt-auto">
-                      <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+                      <NuxtLink to="https://www.buymeacoffee.com/chaoran" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=chaoran&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="buy me coffee banner" loading="lazy"/></NuxtLink>
+                      <!-- <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
                         <Cog6ToothIcon class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                         Settings
-                      </a>
+                      </a> -->
                     </li>
                   </ul>
                 </nav>
@@ -134,14 +138,14 @@ const sidebarOpen = ref(false)
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
         <div class="flex h-16 shrink-0 items-center">
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company" />
+          <NuxtImg class="h-16 w-auto mt-3 rounded-full" :src="siteLogo" alt="Your Company" />
         </div>
         <nav class="flex flex-1 flex-col">
           <ul role="list" class="flex flex-1 flex-col gap-y-7">
             <li>
               <ul role="list" class="-mx-2 space-y-1">
                 <li v-for="item in navigation" :key="item.name">
-                  <NuxtLink :to="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                   <NuxtLink :to="item.href" :class="[item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                     <component :is="item.icon" :class="[item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white', 'h-6 w-6 shrink-0']" aria-hidden="true" />
                     {{ item.name }}
                   </NuxtLink>
@@ -159,11 +163,12 @@ const sidebarOpen = ref(false)
                 </li>
               </ul> -->
             </li>
-            <li class="mt-auto">
-              <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+            <li class="mt-auto">              
+              <NuxtLink to="https://www.buymeacoffee.com/chaoran" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=chaoran&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="buy me coffee banner" loading="lazy" /></NuxtLink>
+              <!-- <NuxtLink to="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
                 <Cog6ToothIcon class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" aria-hidden="true" />
                 Settings
-              </a>
+              </NuxtLink> -->
             </li>
           </ul>
         </nav>
@@ -180,8 +185,8 @@ const sidebarOpen = ref(false)
         <!-- Separator -->
         <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
         <h1 class="font-bold text-indigo-600">{{ siteTitle }}</h1>
-          <span class="flex flex-wrap hidden sm:block">Singapore Primary 1 Registration Companion</span>
-          <span class="flex flex-wrap block sm:hidden">Registration Companion</span>
+          <span class="flex flex-wrap hidden sm:block">Singapore Primary 1 Planning Companion</span>
+          <span class="flex flex-wrap block sm:hidden">Planning Companion</span>
           <v-spacer class="hidden sm:block"></v-spacer>
         <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end">
           <div class="flex items-center gap-x-4 lg:gap-x-6">
@@ -208,6 +213,9 @@ const sidebarOpen = ref(false)
                   <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                     <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{ item.name }}</a>
                   </MenuItem>
+                  <div class="flex justify-center my-3">
+                    <NuxtImg src="/bmc_qr.png" sizes="120px" class="rounded-lg" loading="lazy" alt="buy me coffee QR code"></NuxtImg>
+                  </div>
                 </MenuItems>
               </transition>
             </Menu>

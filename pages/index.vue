@@ -1,17 +1,20 @@
 <template>
   <div>
     <h2 class="font-semibold text-indigo-600">Intro
-      <span><v-icon :class="showIntro ? 'block' : 'transition rotate-180'" icon="mdi-chevron-double-down" color="indigo-600" size="20px" @click="showIntro = !showIntro"></v-icon></span>
-    </h2> 
+      <span><v-icon :class="['transition', showIntro ? '' : 'rotate-180']" icon="mdi-chevron-double-down"
+          color="indigo-600" size="20px" @click="showIntro = !showIntro"></v-icon></span>
+    </h2>
     <div v-show="showIntro" class="text-sm">
-      <p>    I know, I know "every primary school is a good school", but kiasu parents still cautiously plan their strategies for their little ones' primary one registration.
-    Some quetisons are appareantly brother the parents. 
-    Shall I join the parent voluneer program now to secure the 2B round ? 
-    Shall I move to another district that is less competitive in P1 application? </p>
-    <p>I hope this is the tool, that should provide some number insights to help with your important decisions. Lastly, may your kid goes to the dream school, as you wish!</p>
+      <p> I know, I know "every primary school is a good school", but kiasu parents still cautiously plan their strategies
+        for their little ones' primary one registration.
+        Some quetisons are appareantly brother the parents.
+        Shall I join the parent voluneer program now to secure the 2B round ?
+        Shall I move to another district that is less competitive in P1 application? </p>
+      <p>I hope this is the tool, that should provide some number insights to help with your important decisions. Lastly,
+        may your kid goes to the dream school, as you wish!</p>
 
     </div>
-   
+
   </div>
   <v-divider class="my-3"></v-divider>
   <div class="flex flex-row items-end">
@@ -31,15 +34,12 @@
       :items="schoolList" v-model="selected.school"></v-autocomplete>
   </div>
   <div class="mt-3 ml-1">
-    {{ schools.length }} schools are selected
+    {{ schoolsForDisplay.length }} schools are selected
   </div>
   <ul role="list" class="divide-y divide-gray-100">
-    <li v-for="school in schools" :key="school.school_id" class="relative flex justify-between gap-x-6 py-5">
+    <li v-for="school in schoolsForDisplay" :key="school.school_id" class="relative flex justify-between gap-x-6 py-5">
       <div class="flex gap-x-4">
-        <NuxtImg class="h-12 w-12 flex-none rounded-full bg-gray-50" 
-          loading="lazy"
-          width="48px" 
-          height="48px"
+        <NuxtImg class="h-12 w-12 flex-none rounded-full bg-gray-50" loading="lazy" width="48px" height="48px"
           :src="school.logo_url" :alt="'logo of ' + school.name" />
         <div class="min-w-0 flex-auto">
           <p class="text-sm font-semibold leading-6 text-gray-900">
@@ -106,44 +106,41 @@
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 
 // const showIntro = ref(true)
-const selected = ref({
-  area: { name: 'All' },
-  sap: { name: 'All' },
-  gep: { name: 'All' },
-  school: null
-})
+
 const sapChoices = getSapList()
 const gepChoices = getGepList()
 const areaChoices = getAreaList()
 
 const { data } = await useFetch('/api/list_school')
-const schools = ref(data.value)
+const schools = ref(data.value.filter(x => x.school_id != 'juying'))
 const schoolList = computed(() => {
-  return data.value.map(x => x.name)
+  return schools.value.map(x => x.name)
 })
-let selectedArea;
-let showIntro;
-onBeforeMount(() => {
-  selectedArea = useCookie('selectedArea')
-  selectedArea.value = selectedArea.value || 'All'
-  selected.value.area.name = selectedArea.value
-
-  showIntro = useCookie('showIntro', {
-    default: () => (true)
-  })
+const showIntro = useCookie('showIntro', {
+  default: () => (true)
+})
+const selectedArea = useCookie('selectedArea', {
+  default: () => ('All')
+})
+const selected = ref({
+  area: { name: selectedArea.value },
+  sap: { name: 'All' },
+  gep: { name: 'All' },
+  school: null
 })
 
-watch(selected, (n, o) => {
-  const area = n.area.name
-  const sap = n.sap.name
-  const gep = n.gep.name
-  const school = n.school
-  let filtered;
 
+
+const schoolsForDisplay = computed(() => {
+  const area = selected.value.area.name
+  const sap = selected.value.sap.name
+  const gep = selected.value.gep.name
+  const school = selected.value.school
+  let filtered
   if (area === 'All') {
-    filtered = data.value
+    filtered = schools.value
   } else {
-    filtered = data.value.filter((x) => x.area === area)
+    filtered = schools.value.filter((x) => x.area === area)
     selectedArea.value = area
   }
 
@@ -166,10 +163,9 @@ watch(selected, (n, o) => {
   if (school) {
     filtered = data.value.filter((x) => x.name === school)
   }
+  return filtered
 
-  schools.value = filtered
-
-}, { deep: true })
+})
 
 
 useHead({

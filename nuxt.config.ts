@@ -10,7 +10,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
-    '@invictus.codes/nuxt-vuetify'
+    '@invictus.codes/nuxt-vuetify',
+    'nuxt-gtag'
 
   ],
   vuetify: {
@@ -28,6 +29,12 @@ export default defineNuxtConfig({
       styles: true, //| 'none' | 'expose' | 'sass' | { configFile: string },
       autoImport: true, //| false,
       useVuetifyLabs: true, // | false, 
+    }
+  },
+  gtag: {
+    id: 'G-8XTQL3RC8B',
+    config: {
+      page_title: 'SGP1 Companion'
     }
   }
 

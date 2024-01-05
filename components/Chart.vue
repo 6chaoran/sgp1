@@ -52,9 +52,7 @@ const y2A = computed(() => {
 })
 
 
-
-setTimeout(() => {
-
+onMounted(()=>{
     var chartDom = document.getElementById('chart');
     var myChart = echarts.init(chartDom);
     var option;
@@ -128,6 +126,6 @@ setTimeout(() => {
     };
 
     option && myChart.setOption(option);
+})
 
-}, 1000)
 </script>

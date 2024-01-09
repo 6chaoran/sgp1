@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
     '@invictus.codes/nuxt-vuetify',
-    'nuxt-gtag'
-
+    'nuxt-gtag', 
+    '@vite-pwa/nuxt',
   ],
   vuetify: {
     /* vuetify options */
@@ -36,6 +36,47 @@ export default defineNuxtConfig({
     config: {
       page_title: 'SGP1 Companion'
     }
-  }
+  },
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'SGP1 Companion',
+      short_name: 'SGP1',
+      theme_color: '#ffffff',
+      icons: [
+        {
+          src: 'android-icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: 'apple-icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: 'apple-icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable',
+        },
+      ],
+    },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    client: {
+      installPrompt: true,
+      // you don't need to include this: only for testing purposes
+      // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
+      // periodicSyncForUpdates: 20,
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
+    },
+  },
 
 })

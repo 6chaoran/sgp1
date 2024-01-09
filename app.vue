@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import {
   Dialog,
   DialogPanel,
@@ -227,6 +226,7 @@ const sidebarOpen = ref(false)
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
           <NuxtLayout>
+            <NuxtPwaManifest />
             <NuxtPage />
           </NuxtLayout>
         </div>

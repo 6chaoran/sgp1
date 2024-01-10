@@ -12,6 +12,7 @@
   "devDependencies": {
     "@invictus.codes/nuxt-vuetify": "^0.3.0",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/sitemap": "^5.0.1",
     "@nuxtjs/tailwindcss": "^6.10.1",
     "@vite-pwa/nuxt": "^0.4.0",
     "nuxt": "^3.9.0",

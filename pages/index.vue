@@ -21,11 +21,15 @@
     <div class="w-1/2 mr-0 sm:w-1/3">
       <SelectMenu label-text="Area" :choices="areaChoices" :selected="selected.area" v-model="selected.area" />
     </div>
-    <div class="w-1/4 mx-1 sm:w-1/12">
+    <div class="w-1/6 mx-1 sm:w-1/12">
       <SelectMenu label-text="SAP" :choices="sapChoices" :selected="selected.sap" v-model="selected.sap" />
     </div>
-    <div class="w-1/4 mx-0 sm:w-1/12">
+    <div class="w-1/6 mx-1 sm:w-1/12">
       <SelectMenu label-text="GEP" :choices="gepChoices" :selected="selected.gep" v-model="selected.gep" />
+    </div>
+    <div class="w-1/6 mx-1 sm:w-1/12">
+      <SelectMenu label-text="Affiliations" :choices="affilChoices" :selected="selected.affil" v-model="selected.affil">
+      </SelectMenu>
     </div>
 
   </div>
@@ -33,6 +37,7 @@
     <v-autocomplete variant="outlined" density="compact" label="School" rounded="lg" color="indigo" clearable
       :items="schoolList" v-model="selected.school"></v-autocomplete>
   </div>
+
   <div class="mt-3 ml-1">
     {{ schoolsForDisplay.length }} schools are selected
   </div>
@@ -57,12 +62,17 @@
             </span>
             <span v-if="school['type_girls-only']"
               class="inline-flex items-center rounded-full bg-pink-50 mx-2 px-2 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-500/10">
-              Girls Only
+              Girls
             </span>
             <span v-if="school['type_boys-only']"
               class="inline-flex items-center rounded-full bg-blue-50 mx-2 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10">
-              Boys Only
+              Boys
             </span>
+            <span v-if="school['affiliations']"
+              class="inline-flex items-center rounded-full bg-blue-50 mx-2 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-500/10">
+              Affil. 
+            </span>
+            <v-tooltip v-if="school['affiliations']" activator="parent" location="right">{{ school['affiliations'] }}</v-tooltip>
 
           </p>
           <div class="mt-1 flex items-center gap-x-1.5 sm:hidden">
@@ -104,12 +114,14 @@
 
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { getAffilList } from '~/utils/selectionChoices';
 
 // const showIntro = ref(true)
 
 const sapChoices = getSapList()
 const gepChoices = getGepList()
 const areaChoices = getAreaList()
+const affilChoices = getAffilList()
 
 const { data } = await useFetch('/api/list_school')
 const schools = ref(data.value.filter(x => x.school_id != 'juying'))
@@ -126,19 +138,19 @@ const selected = ref({
   area: { name: selectedArea.value },
   sap: { name: 'All' },
   gep: { name: 'All' },
+  affil: { name: 'All' },
   school: null
 })
-
-
 
 const schoolsForDisplay = computed(() => {
   const area = selected.value.area.name
   const sap = selected.value.sap.name
   const gep = selected.value.gep.name
+  const affil = selected.value.affil.name
   const school = selected.value.school
-  let filtered
+  let filtered = schools.value
   if (area === 'All') {
-    filtered = schools.value
+    // filtered = schools.value
   } else {
     filtered = schools.value.filter((x) => x.area === area)
     selectedArea.value = area
@@ -158,6 +170,14 @@ const schoolsForDisplay = computed(() => {
     filtered = filtered.filter((x) => !x.type_sap)
   } else {
 
+  }
+
+  if (affil === true) {
+    filtered = filtered.filter((x) => x.affiliations != null)
+  } else if (affil === false) {
+    filtered = filtered.filter((x) => x.affiliations == null)
+  } else {
+    
   }
 
   if (school) {

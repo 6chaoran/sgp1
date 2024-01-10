@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@invictus.codes/nuxt-vuetify',
     'nuxt-gtag', 
     '@vite-pwa/nuxt',
+    '@nuxtjs/sitemap',
   ],
   vuetify: {
     /* vuetify options */
@@ -50,13 +51,18 @@ export default defineNuxtConfig({
           type: 'image/png',
         },
         {
-          src: 'apple-icon-512x512.png',
-          sizes: '512x512',
+          src: 'apple-icon-180x180.png',
+          sizes: '180x180',
           type: 'image/png',
         },
         {
-          src: 'apple-icon-512x512.png',
-          sizes: '512x512',
+          src: 'ms-icon-310x310.png',
+          sizes: '310x310',
+          type: 'image/png',
+        },
+        {
+          src: 'ms-icon-310x310.png',
+          sizes: '310x310',
           type: 'image/png',
           purpose: 'any maskable',
         },
@@ -69,7 +75,7 @@ export default defineNuxtConfig({
       installPrompt: true,
       // you don't need to include this: only for testing purposes
       // if enabling periodic sync for update use 1 hour or so (periodicSyncForUpdates: 3600)
-      // periodicSyncForUpdates: 20,
+      periodicSyncForUpdates: 60,
     },
     devOptions: {
       enabled: true,
@@ -77,6 +83,9 @@ export default defineNuxtConfig({
       navigateFallbackAllowlist: [/^\/$/],
       type: 'module',
     },
+  },
+  site: {
+    url: 'https://sgp1.ichaoran.com',
   },
 
 })

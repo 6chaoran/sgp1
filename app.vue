@@ -32,11 +32,19 @@ const navigation = ref([
   // { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
 ])
 
-const teams = [
-  // { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  // { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
+const qlinks = [
+  { id: 1, name: 'MOE P1 registration Process', href: 'https://www.moe.gov.sg/primary/p1-registration', 
+    initial: 'M', current: false },
+  { id: 2, name: 'MOE P1 registration FAQ', href: 'https://www.moe.gov.sg/faq?categoryid=76037F9F568F46A7AA80EFDCE9AB23CD', 
+    initial: 'FAQ', current: false},
   // { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
+
+const projects = [
+{ id: 1, name: 'SG Schooling', href: 'https://sgschooling.com/school/', initial: 'S', current: false,  
+description: 'A useful website serve the similar purpose, <br>data source of the historical ballot result' },
+]
+
 const userNavigation = [
   { name: 'About me', href: 'https://www.ichaoran.com/about/' },
   { name: 'Other projects', href: 'https://www.ichaoran.com/projects/'},
@@ -55,7 +63,7 @@ const updateCurrent = (idx) => {
 const siteTitle = 'SGP1'
 const userName = 'Chaoran'
 const userAvatar = '/unnamed.jpg'
-const siteLogo = '/social.jfif' //'https://tailwindui.com/img/logos/mark.svg?color=white'
+const siteLogo = '/apple-icon-180x180.png' //'https://tailwindui.com/img/logos/mark.svg?color=white'
 const sidebarOpen = ref(false)
 
 </script>
@@ -105,17 +113,33 @@ const sidebarOpen = ref(false)
                         </li>
                       </ul>
                     </li>
-                    <!-- <li>
-                      <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+                    <li>
+                      <div class="text-xs font-semibold leading-6 text-indigo-200">Quick links</div>
                       <ul role="list" class="-mx-2 mt-2 space-y-1">
-                        <li v-for="team in teams" :key="team.name">
-                          <a :href="team.href" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                        <li v-for="team in qlinks" :key="team.name">
+                          <NuxtLink :to="team.href" target="_blank" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                             <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ team.initial }}</span>
                             <span class="truncate">{{ team.name }}</span>
-                          </a>
+                            <v-tooltip v-if="team.description" activator="parent" location="bottom">{{  team.description }}</v-tooltip> 
+                          </NuxtLink>
                         </li>
                       </ul>
-                    </li> -->
+                    </li>
+                    <li>
+                      <div class="text-xs font-semibold leading-6 text-indigo-200">Related Projects</div>
+                      <ul role="list" class="-mx-2 mt-2 space-y-1">
+                        <li v-for="team in projects" :key="team.name">
+                          <NuxtLink :to="team.href" target="_blank" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ team.initial }}</span>
+                            <span class="truncate">{{ team.name }} <v-tooltip activator="parent" location="bottom">{{ team.description }}</v-tooltip></span>
+                            <v-tooltip v-if="team.description" activator="parent" location="bottom">
+                              <span v-html="team.description"></span>
+                            </v-tooltip> 
+                          </NuxtLink>
+                        </li>
+                      </ul>
+                    </li>
+
                     <li class="mt-auto">
                       <NuxtLink to="https://www.buymeacoffee.com/chaoran" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=chaoran&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="buy me coffee banner" loading="lazy"/></NuxtLink>
                       <!-- <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
@@ -152,16 +176,33 @@ const sidebarOpen = ref(false)
               </ul>
             </li>
             <li>
-              <!-- <div class="text-xs font-semibold leading-6 text-indigo-200">Your teams</div>
+              <div class="text-xs font-semibold leading-6 text-indigo-200">Quick Links</div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
-                <li v-for="team in teams" :key="team.name">
-                  <a :href="team.href" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                <li v-for="team in qlinks" :key="team.name">
+                  <NuxtLink :href="team.href" target="_blank" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                     <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ team.initial }}</span>
                     <span class="truncate">{{ team.name }}</span>
-                  </a>
+                    <v-tooltip v-if="team.description" activator="parent" location="bottom">{{  team.description }}</v-tooltip> 
+                  </NuxtLink>
                 </li>
-              </ul> -->
+              </ul>
             </li>
+
+            <li>
+              <div class="text-xs font-semibold leading-6 text-indigo-200">Related Projects</div>
+              <ul role="list" class="-mx-2 mt-2 space-y-1">
+                <li v-for="team in projects" :key="team.name">
+                  <NuxtLink :href="team.href" target="_blank" :class="[team.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">{{ team.initial }}</span>
+                    <span class="truncate">{{ team.name }}</span>
+                    <v-tooltip v-if="team.description" activator="parent" location="bottom">
+                      <span v-html="team.description"></span>
+                    </v-tooltip> 
+                  </NuxtLink>
+                </li>
+              </ul>
+            </li>
+
             <li class="mt-auto">              
               <NuxtLink to="https://www.buymeacoffee.com/chaoran" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=chaoran&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="buy me coffee banner" loading="lazy" /></NuxtLink>
               <!-- <NuxtLink to="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">

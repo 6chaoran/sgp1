@@ -33,7 +33,7 @@ const navigation = ref([
 ])
 
 const qlinks = [
-  { id: 1, name: 'MOE P1 registration Process', href: 'https://www.moe.gov.sg/primary/p1-registration', 
+  { id: 1, name: 'MOE P1 registration process', href: 'https://www.moe.gov.sg/primary/p1-registration', 
     initial: 'M', current: false },
   { id: 2, name: 'MOE P1 registration FAQ', href: 'https://www.moe.gov.sg/faq?categoryid=76037F9F568F46A7AA80EFDCE9AB23CD', 
     initial: 'FAQ', current: false},
@@ -266,8 +266,10 @@ const sidebarOpen = ref(false)
       <main class="py-10">
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
+          <NuxtLoadingIndicator />
+          <NuxtPwaManifest />
           <NuxtLayout>
-            <NuxtPwaManifest />
+            
             <NuxtPage />
           </NuxtLayout>
         </div>

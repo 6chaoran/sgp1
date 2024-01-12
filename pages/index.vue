@@ -1,4 +1,4 @@
-<template>
+<template>  
   <div>
     <h2 class="font-semibold text-indigo-600">Intro
       <span><v-icon :class="['transition', showIntro ? '' : 'rotate-180']" icon="mdi-chevron-double-down"
@@ -17,32 +17,26 @@
 
   </div>
   <v-divider class="my-3"></v-divider>
-    <div class="flex flex-row">
-    <div class="w-1/2 mr-0 sm:w-1/2">
+    <div class="flex flex-row space-x-1">
+    <div class="w-1/2 sm:w-1/2">
       <SelectMenu label-text="Area" :choices="areaChoices" :selected="selected.area" v-model="selected.area" />
     </div>
-    <div class="w-1/4 mx-1 sm:w-1/6">
+    <div class="w-1/6 sm:w-1/6">
       <SelectMenu label-text="SAP" :choices="sapChoices" :selected="selected.sap" v-model="selected.sap" />
     </div>
-    <div class="w-1/4 mx-1 sm:w-1/6">
+    <div class="w-1/6  sm:w-1/6">
       <SelectMenu label-text="GEP" :choices="gepChoices" :selected="selected.gep" v-model="selected.gep" />
     </div>
-    <div class="w-1/6 mx-1 hidden sm:w-1/10 sm:block">
-      <SelectMenu label-text="Affiliations" :choices="affilChoices" :selected="selected.affil" v-model="selected.affil">
+    <div class="w-1/6  sm:w-1/10 sm:block">
+      <SelectMenu label-text="Affil." :choices="affilChoices" :selected="selected.affil" v-model="selected.affil">
       </SelectMenu>
     </div>
   </div>
-    <div class="flex flex-row">
-      <div class="w-3/4 mt-8 sm:w-1/2 sm:mt-1">
+      <div class="w-full mt-1.5 sm:w-1/2 ">
       <v-autocomplete variant="outlined" density="compact" label="School" rounded="lg" color="indigo" clearable
-        :items="schoolList" v-model="selected.school"></v-autocomplete>
+        :items="schoolList" v-model="selected.school" ></v-autocomplete>
     </div>
-    <div class="block w-1/4 mt-1 mx-1 sm:hidden">
-        <!-- <v-select variant="outlined" density="compact" label="Affil" rounded="lg" color="indigo"></v-select> -->
-        <SelectMenu label-text="Affiliations" :choices="affilChoices" :selected="selected.affil" v-model="selected.affil">
-      </SelectMenu>
-      </div>
-    </div>
+
   
   <div class="mt-3 ml-1">
     {{ schoolsForDisplay.length }} schools are selected
@@ -50,8 +44,8 @@
   <ul role="list" class="divide-y divide-gray-100">
     <li v-for="school in schoolsForDisplay" :key="school.school_id" class="relative flex justify-between gap-x-6 py-5">
       <div class="flex gap-x-4">
-        <NuxtImg class="h-12 w-12 flex-none rounded-full bg-gray-50" loading="lazy" width="48px" height="48px"
-          :src="school.logo_url" :alt="'logo of ' + school.name" />
+        <img class="h-12 w-12 flex-none rounded-full bg-gray-50" loading="lazy" width="48px" height="48px"
+          :src="school.logo_url2 ? '/school_logo/' + school.logo_url2 : school.logo_url" :alt="'logo of ' + school.name" />
         <div class="min-w-0 flex-auto">
           <p class="text-sm font-semibold leading-6 text-gray-900">
             <a :href="`/schools/${school.school_id}`">
@@ -121,8 +115,6 @@
 <script setup>
 import { ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { getAffilList } from '~/utils/selectionChoices';
-
-// const showIntro = ref(true)
 
 const sapChoices = getSapList()
 const gepChoices = getGepList()

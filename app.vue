@@ -263,13 +263,12 @@ const sidebarOpen = ref(false)
         </div>
       </div>
 
-      <main class="py-10">
+      <main class="py-5">
         <div class="px-4 sm:px-6 lg:px-8">
           <!-- Your content -->
           <NuxtLoadingIndicator />
           <NuxtPwaManifest />
           <NuxtLayout>
-            
             <NuxtPage />
           </NuxtLayout>
         </div>

@@ -5,7 +5,9 @@ export default defineEventHandler(async(event) => {
     const key = config.public.supabaseKey
     const supabase = createClient(url, key)
     const { data, error } = await supabase
-      .from('profile')
-      .select('school_id, area, name, parent_volunteer, logo_url, address, website, type_sap, type_boys-only, type_girls-only, type_gep, affiliations, logo_url2, moe_url')
+      .from('profile2')
+      .select('school_id, area, name, parent_volunteer, logo_url, address, website, type_sap, '+
+      'type_boys-only, type_girls-only, type_gep, affiliations, logo_url2, moe_url, ' +
+      'googlemap_url, review_num, review_rating_avg')
     return data
 })

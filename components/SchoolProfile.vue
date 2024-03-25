@@ -33,7 +33,7 @@
                 </h1>
                 <div class="mt-2">
                     <v-icon icon="mdi-map-marker" size="small" color="gray-600" class="pa-1 mr-2"></v-icon><span
-                        class="mt-2 text-sm text-gray-700">{{ profile.address }} &nbsp; | &nbsp; <NuxtLink
+                        class="mt-2 text-sm text-gray-700"><NuxtLink :to="profile.googlemap_url" target="_blank">{{ profile.address }}</NuxtLink> &nbsp; | &nbsp; <NuxtLink
                             :to="profile.website" target="_blank" class="underline">Website</NuxtLink></span>
                 </div>
                 <div class="mt-3">
@@ -60,5 +60,7 @@ const props = defineProps({
     reviews: Array,
     items: Array,
 })
+
+console.log(props.profile.value)
 
 </script>

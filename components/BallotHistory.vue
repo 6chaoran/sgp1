@@ -51,7 +51,6 @@
 
 const props = defineProps({
     ballotHistoryData: Array,
-    reviews: Array,
     year: String,
 })
 

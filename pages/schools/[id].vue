@@ -1,10 +1,10 @@
 <template>
-  <SchoolProfile :reviews="reviews" :profile="profile" :items="items" />
+  <SchoolProfile :profile="profile" :items="items" />
   <div class="mt-4 sm:mt-0 sm:flex-none sm:w-1/6">
     <SelectMenu label-text="Year" :choices="yearChoices" :selected="selectedYear" v-model="selectedYear" />
   </div>
-  <BallotHistory :ballotHistoryData="ballotHistoryData" :reviews="reviews" :year="selectedYear.name"/>
-  <ReviewModal :reviews="reviews" />
+  <BallotHistory :ballotHistoryData="ballotHistoryData" :year="selectedYear.name"/>
+  <ReviewModal :school-id="id"/>
 </template>
   
 <script setup>
@@ -33,10 +33,6 @@ useFetch(`/api/ballot/${id}`).then((resp) => {
   yearChoices.value = allYears.map(x => Object({ name: x }))
 })
 
-useFetch(`/api/review/${id}`).then((resp) => {
-  reviews.value = resp.data.value
-})
-
 const items = computed(() => {
   return [
     {
@@ -47,7 +43,7 @@ const items = computed(() => {
     {
       title: profile.value.area,
       disabled: false,
-      href: '',//`/area/${profile.value.area}`,
+      href: `/area/${profile.value.area.toLowerCase()}`,
     },
     // {
     //   title: profile.value.name,

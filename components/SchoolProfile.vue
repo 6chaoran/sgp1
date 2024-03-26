@@ -37,7 +37,7 @@
                             :to="profile.website" target="_blank" class="underline">Website</NuxtLink></span>
                 </div>
                 <div class="mt-3">
-                    <Rating :reviews="reviews" />
+                    <Rating :count="profile.review_num" :avg="profile.review_rating_avg" />
                 </div>
                 <div v-if="profile['affiliations']" class="mt-2">
                     <v-icon icon="mdi-map-marker" size="small" color="gray-600" class="pa-1 mr-2"></v-icon><span
@@ -57,10 +57,7 @@
 
 const props = defineProps({
     profile: Object,
-    reviews: Array,
     items: Array,
 })
-
-console.log(props.profile.value)
 
 </script>
